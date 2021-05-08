@@ -1,0 +1,5 @@
+Package: gamsr
+Type: Package
+Title: Tidy IO between GAMS and R
+Version: 0.0.1.0
+RoxygenNote: 7.1.1
