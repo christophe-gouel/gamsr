@@ -57,7 +57,7 @@ combine.lists <- function(list1, list2)
 #' @return A 'tibble()', a 'data.table', or a 'data.frame'.
 #' @examples
 #' fpath <- file.path(sub(";.*$", "", Sys.getenv("GAMSDIR")), "gamslib_ml", "trnsport.1")
-#' gams(fpath)
+#' gams(fpath, options = list(output = "NUL", lp = "cplex"))
 #' @export
 gams <- function(gmsfile, options = list(), save,
                  restart, gdx, envvar, ...) {
@@ -78,12 +78,15 @@ gams <- function(gmsfile, options = list(), save,
   restart <- ifelse(missing(restart), "", paste0("restart=", restart))
   
   gdx <- ifelse(missing(gdx), "", paste0("gdx=", gdx))
+
+  if (missing(envvar)) envvar <- ""
+  else {
+    envvar <- purrr::map2(envvar,
+                          names(envvar),
+                          ~ paste0("--", .y, "=", .x))
+    envvar <- purrr::reduce(envvar, paste)    
+  }
   
-  envvar <- purrr::map2(envvar,
-                        names(envvar),
-                        ~ paste0("--", .y, "=", .x))
-  envvar <- purrr::reduce(envvar, paste)    
-    
   gamscl <- paste("gams ", gmsfile, options, save, restart, gdx, envvar)
   system(gamscl, ...)
 }
