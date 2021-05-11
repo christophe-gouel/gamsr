@@ -7,9 +7,10 @@ prepare4gdx <- function(x,symName,domains,symText) {
   attr(x,"domains") <- domains
   attr(x,"symName") <- symName
   if (!missing(symText)) attr(x,"ts") <- symText
-  x
+  return(x)
 }
 
+#' @export
 prepare.set4gdx <- function(x,symName,domains = "*",symText) {
   if (missing(symName)) symName <- deparse(substitute(x))
   if (symName == ".") symName <- names(x[1])
@@ -19,6 +20,7 @@ prepare.set4gdx <- function(x,symName,domains = "*",symText) {
   prepare4gdx(x,symName,domains,symText)
 }
 
+#' @export
 prepare.map4gdx <- function(x,symName,domains,symText) {
   if (missing(symName)) symName <- deparse(substitute(x))
   if (symName == ".") symName <- do.call(paste0,c("map",as.list(names(x))))
@@ -26,6 +28,7 @@ prepare.map4gdx <- function(x,symName,domains,symText) {
   prepare4gdx(x,symName,domains,symText)
 }
 
+#' @export
 prepare.par4gdx <- function(x,symName,domains,symText) {
   if (missing(symName)) symName <- deparse(substitute(x))
   if (symName == ".") symName <- names(x[ncol(x)])
@@ -33,7 +36,14 @@ prepare.par4gdx <- function(x,symName,domains,symText) {
   prepare4gdx(x,symName,domains,symText)
 }
 
+#' @examples
+#' a <- data.frame(i = c("a", "b", "c"), val = 1:3)
+#' a <- prepare.par4gdx(a)
+#' i <- a[,"i", drop = FALSE]
+#' i <- prepare.set4gdx(i)
+#' gdxfile <- tempfile(fileext = ".gdx")
+#' write_gdx(gdxfile, a, i)
 #' @export
 write_gdx <- function(gdxName, ...) {
-  wgdx.lst(gdxName, ...)
+  gdxrrw::wgdx.lst(gdxName, ...)
 }

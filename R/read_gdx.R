@@ -64,7 +64,7 @@ read_gdx_single <- function(file, symName, col_names = NULL, attribute = "l",
 #' fpath <- system.file("extdata", "trnsport.gdx", package="gdxrrw")
 #' read_gdx(fpath, "a")
 #' read_gdx(fpath, "x")
-#' read_gdx(fpath, "i")
+#' read_gdx(fpath, "i", te = FALSE)
 #' @export
 read_gdx <- function(files, symName, col_names = NULL, names = NULL,
                      attribute = "l", data_type = "tb", ...) {

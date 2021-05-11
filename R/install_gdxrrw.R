@@ -18,14 +18,14 @@ select_ext <- function(OS) {
 }
 
 #' @export
-install_gdxrrw <- function(version = "last", type = "platform_default") {
+install_gdxrrw <- function(version = "latest", type = "platform_default") {
 
   OS <- Sys.info()["sysname"]
   if (type == "platform_default")
     type <- ifelse(OS == "Windows", "binary", "source")
   ext <- ifelse(type == "source", "tar.gz", select_ext(OS))
   
-  if (version == "last") version <- detect_last_version()
+  if (version == "latest") version <- detect_last_version()
   
   base_url <- "https://support.gams.com/_media/gdxrrw:gdxrrw_"
   full_url <- paste0(base_url, version, ".", ext)
