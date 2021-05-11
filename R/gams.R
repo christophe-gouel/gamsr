@@ -66,22 +66,26 @@ gams <- function(gmsfile, options = list(), save,
                           ll = 0,
                           ps = 0,
                           pw = 109)
+
   options <- combine.lists(default_options, options)
-  options <- purrr::reduce(paste)(
-    purrr::map2(options,
-                names(options),
-                ~ paste0(.y, "=", .x)))
+  options <- purrr::map2(options,
+                         names(options),
+                         function(opt_value, opt_name) paste0(opt_name, "=", opt_value))
+  options <- purrr::reduce(options, paste)    
     
   save <- ifelse(missing(save), "", paste0("save=", save))
+  
   restart <- ifelse(missing(restart), "", paste0("restart=", restart))
+  
   gdx <- ifelse(missing(gdx), "", paste0("gdx=", gdx))
-  envvar <- purrr::reduce(paste)(
-    purrr::map2(envvar,
-                names(envvar),
-                ~ paste0("--", .y, "=", .x)))
+  
+  envvar <- purrr::map2(envvar,
+                        names(envvar),
+                        ~ paste0("--", .y, "=", .x))
+  envvar <- purrr::reduce(envvar, paste)    
     
-  gamscl <- paste("gams ", gmsfile, options, save, restart, gdx, envvar,...)
-  system(gamscl)
+  gamscl <- paste("gams ", gmsfile, options, save, restart, gdx, envvar)
+  system(gamscl, ...)
 }
 
 
