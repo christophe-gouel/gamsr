@@ -36,3 +36,19 @@ i <- prepare.set4gdx(i)
 gdxfile <- tempfile(fileext = ".gdx")
 write_gdx(gdxfile, a, i)
 ```
+
+Launch GAMS from R
+
+```r
+fpath <- file.path(sub(";.*$", "", Sys.getenv("GAMSDIR")), "gamslib_ml", "trnsport.1")
+gams(fpath, options = list(output = "NUL", lp = "cplex"))
+```
+
+Parallel launch using `furrr` package and read all the gdx files at once
+
+```r
+furrr::future_walk(1:10,
+                   ~ gams(fpath, options = list(lo = 0, output = "NUL", lp = "cplex"),
+				          gdx = paste0(.x, ".gdx")))
+read_gdx(paste0(1:10, ".gdx"), "a")
+```
