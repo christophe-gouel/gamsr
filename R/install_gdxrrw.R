@@ -17,6 +17,7 @@ select_ext <- function(OS) {
          ... = "tgz")
 }
 
+#' @export
 install_gdxrrw <- function(version = "last", type = "platform_default") {
 
   OS <- Sys.info()["sysname"]

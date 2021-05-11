@@ -44,6 +44,21 @@ combine.lists <- function(list1, list2)
    new.list
 } # end of combine.lists
 
+
+#' Launch GAMS from command line
+#'
+#' Launch GAMS from command line
+#' @param gmsfile path to one gms file
+#' @param options list of options
+#' @param save path to restart file
+#' @param restart path to restart file
+#' @param gdx path to gdx file
+#' @param envar list of environmental variables
+#' @return A 'tibble()', a 'data.table', or a 'data.frame'.
+#' @examples
+#' fpath <- file.path(sub(";.*$", "", Sys.getenv("GAMSDIR")), "gamslib_ml", "trnsport.1")
+#' gams(fpath)
+#' @export
 gams <- function(gmsfile, options = list(), save,
                  restart, gdx, envvar, ...) {
   # Make a GAMS call using all the provided arguments

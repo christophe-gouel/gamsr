@@ -33,6 +33,7 @@ prepare.par4gdx <- function(x,symName,domains,symText) {
   prepare4gdx(x,symName,domains,symText)
 }
 
+#' @export
 write_gdx <- function(gdxName, ...) {
   wgdx.lst(gdxName, ...)
 }

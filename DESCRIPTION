@@ -3,3 +3,12 @@ Type: Package
 Title: Tidy IO between GAMS and R
 Version: 0.0.1.0
 RoxygenNote: 7.1.1
+Imports:
+    data.table,
+    dplyr,
+    purrr,
+    rlang,
+    rvest,
+    stringr,
+    tibble
+URL: https://github.com/christophe-gouel/gamsr
