@@ -64,10 +64,13 @@ read_gdx_single <- function(file, symName, col_names = NULL, attribute = "l",
 #' fpath <- system.file("extdata", "trnsport.gdx", package="gdxrrw")
 #' read_gdx(fpath, "a")
 #' read_gdx(fpath, "x")
+#' read_gdx(fpath, "i")
 #' @export
 read_gdx <- function(files, symName, col_names = NULL, names = NULL,
                      attribute = "l", data_type = "tb", ...) {
-  read_gdx_fn <- function(file) read_gdx_single(file, symName, col_names, attribute, data_type, ...)
+  read_gdx_fn <- function(file)
+    read_gdx_single(file = file, symName = symName, col_names = col_names,
+                    attribute = attribute, data_type = data_type, ...)
   if (is.null(names)) {
     if (length(files) == 1) return(read_gdx_fn(files))
     else names <- stringr::str_remove(basename(files), ".gdx")
