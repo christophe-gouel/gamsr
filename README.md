@@ -11,17 +11,17 @@ devtools::install_github("christophe-gouel/gamsr");
 
 ## Usage
 
-Install gdxrrw from [https://support.gams.com/gdxrrw:interfacing_gams_and_r](GAMS website) 
+Install gdxrrw from [GAMS website](https://support.gams.com/gdxrrw:interfacing_gams_and_r)
 
 ```r
 install_gdxrrw() # Install latest version
-install_gdxrrw(version = "1.0.6") # Install latest version
+install_gdxrrw(version = "1.0.6") # Install a specific version
 ```
 
 Read gdx files
 
 ```r
-fpath <- system.file("extdata", "trnsport.gdx", package="gdxrrw")
+fpath <- system.file("extdata", "trnsport.gdx", package = "gdxrrw")
 read_gdx(fpath, "a") # as tibble
 read_gdx(fpath, "a", data_type = "dt") # as data.table
 ```

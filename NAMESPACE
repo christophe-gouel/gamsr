@@ -2,5 +2,8 @@
 
 export(gams)
 export(install_gdxrrw)
+export(prepare.map4gdx)
+export(prepare.par4gdx)
+export(prepare.set4gdx)
 export(read_gdx)
 export(write_gdx)

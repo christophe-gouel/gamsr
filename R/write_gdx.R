@@ -36,6 +36,10 @@ prepare.par4gdx <- function(x,symName,domains,symText) {
   prepare4gdx(x,symName,domains,symText)
 }
 
+#' Write gdx files
+#'
+#' @param gdxName path to one gdx file
+#' @param ... additional arguments to be passed to the function wgdx.lst.
 #' @examples
 #' a <- data.frame(i = c("a", "b", "c"), val = 1:3)
 #' a <- prepare.par4gdx(a)
