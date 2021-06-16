@@ -10,5 +10,6 @@ Imports:
     rlang,
     rvest,
     stringr,
-    tibble
+    tibble,
+    xml2
 URL: https://github.com/christophe-gouel/gamsr

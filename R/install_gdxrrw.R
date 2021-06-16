@@ -1,7 +1,7 @@
 
 detect_last_version <- function() {
   gdxrrw_url <- "https://support.gams.com/doku.php?id=gdxrrw:interfacing_gams_and_r"
-  gdxrrw_html <- rvest::read_html(gdxrrw_url)
+  gdxrrw_html <- xml2::read_html(gdxrrw_url)
   alist <- rvest::html_elements(gdxrrw_html, "a")
   last_version_url <- rvest::html_attr(alist[stringr::str_detect(alist,"tar.gz")][1],
                                        "href")
