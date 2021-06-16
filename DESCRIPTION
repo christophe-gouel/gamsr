@@ -8,8 +8,7 @@ Imports:
     dplyr,
     purrr,
     rlang,
-    rvest,
+    rvest (>= 1.0.0),
     stringr,
-    tibble,
-    xml2
+    tibble
 URL: https://github.com/christophe-gouel/gamsr
