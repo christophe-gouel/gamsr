@@ -5,8 +5,8 @@ Tools for tidy interactions between R and GAMS
 ## Installation
 
 ```r
-# install.packages("devtools")
-devtools::install_github("christophe-gouel/gamsr");
+# install.packages("remotes")
+remotes::install_github("christophe-gouel/gamsr");
 ```
 
 ## Usage
