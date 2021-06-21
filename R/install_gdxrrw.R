@@ -17,6 +17,15 @@ select_ext <- function(OS) {
          ... = "tgz")
 }
 
+#' Install gdxrrw package
+#'
+#' @param version character string defining the version of the package to
+#' install. Default to "latest".
+#' @param type character, indicating the type of package to download and
+#' install. Possible values are '"platform_default"' (the default) and
+#' '"source"'. Except on Windows, the platform default is to install from
+#' source. Any other value will be interpreted as installation from binary.
+#' @return Invisible 'NULL'.
 #' @export
 install_gdxrrw <- function(version = "latest", type = "platform_default") {
 
@@ -33,4 +42,5 @@ install_gdxrrw <- function(version = "latest", type = "platform_default") {
   download.file(full_url,
                 destfile = gdxrrw_file)
   install.packages(gdxrrw_file, repos = NULL)
+  return(invisible(list()))
 }
