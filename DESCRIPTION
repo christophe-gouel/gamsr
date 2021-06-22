@@ -8,7 +8,6 @@ Imports:
     dplyr,
     purrr,
     reshape2,
-    rlang,
     rvest (>= 1.0.0),
     stringr,
     tibble

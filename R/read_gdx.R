@@ -32,7 +32,7 @@ read_gdx_single <- function(file, symName, col_names = NULL, attribute = "l",
          "variables" = rgdx.var(file, symName, names = col_names, attr = attribute, ...))
   if (is.character(sym)) {
     if (is.null(col_names)) col_names <- symName
-    sym <- tibble::tibble(rlang::expr(!!col_names := gdxrrw::rgdx.scalar(file, symName))) 
+    sym <- tibble::enframe(gdxrrw::rgdx.scalar(file, symName), name = NULL, value = col_names)
   } else sym <- tibble::as_tibble(sym)
   sym <- switch(data_type,
                 "tb" = sym,
@@ -64,6 +64,7 @@ read_gdx_single <- function(file, symName, col_names = NULL, attribute = "l",
 #' fpath <- system.file("extdata", "trnsport.gdx", package="gdxrrw")
 #' read_gdx(fpath, "a")
 #' read_gdx(fpath, "x")
+#' read_gdx(fpath, "f")
 #' read_gdx(fpath, "i", te = FALSE)
 #' @export
 read_gdx <- function(files, symName, col_names = NULL, names = NULL,
