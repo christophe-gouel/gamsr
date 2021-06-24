@@ -30,9 +30,9 @@ Write gdx files
 
 ```r
 a <- data.frame(i = c("a", "b", "c"), val = 1:3)
-a <- prepare.par4gdx(a)
+a <- prepare_par4gdx(a)
 i <- a[,"i", drop = FALSE]
-i <- prepare.set4gdx(i)
+i <- prepare_set4gdx(i)
 gdxfile <- tempfile(fileext = ".gdx")
 write_gdx(gdxfile, a, i)
 ```
