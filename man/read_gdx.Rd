@@ -46,5 +46,6 @@ Read gdx files in a tidy way
 fpath <- system.file("extdata", "trnsport.gdx", package="gdxrrw")
 read_gdx(fpath, "a")
 read_gdx(fpath, "x")
+read_gdx(fpath, "f")
 read_gdx(fpath, "i", te = FALSE)
 }

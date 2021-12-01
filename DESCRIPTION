@@ -2,7 +2,7 @@ Package: gamsr
 Type: Package
 Title: Tidy IO between GAMS and R
 Version: 0.0.2.0
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 Imports:
     data.table,
     dplyr,
