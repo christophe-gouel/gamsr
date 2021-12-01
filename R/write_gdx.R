@@ -28,8 +28,8 @@ prepare_set4gdx <- function(x,symName,domains = "*",symText) {
     x[[1]] <- as.factor(x[[1]])
     if (ncol(x) > 1) x[[2]] <- as.character(x[[2]])
     if (missing(symText) & ncol(x) > 1) symText <- names(x[2])
-  } else if (is.vector(x)) {x <- as.factor(x)
-  } else if(!is.factor(x)) stop("Input should be a data.frame, a vector, or a factor.")
+  } else if (is.vector(x) | is.factor(x)) {x <- as.data.frame(as.factor(x))
+  } else stop("Input should be a data.frame, a vector, or a factor.")
   prepare_4gdx(x,symName,domains,symText)
 }
 
