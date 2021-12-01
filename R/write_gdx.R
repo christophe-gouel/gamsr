@@ -12,7 +12,7 @@ prepare_4gdx <- function(x,symName,domains,symText) {
 
 #' Prepare set for export to gdx
 #' 
-#' @param x R variable (data.frame or vector) to be prepared for exportation.
+#' @param x R variable (data.frame, vector, or factor) to be prepared for exportation.
 #' @param symName Symbol name to be used in gdx file. Use by default the name
 #' of the variable to be exported.
 #' @param domains optional vector of characters defining the domain over which
@@ -29,7 +29,7 @@ prepare_set4gdx <- function(x,symName,domains = "*",symText) {
     if (ncol(x) > 1) x[[2]] <- as.character(x[[2]])
     if (missing(symText) & ncol(x) > 1) symText <- names(x[2])
   } else if (is.vector(x)) {x <- as.factor(x)
-  } else stop("Input should be a data.frame or a vector.")
+  } else if(!is.factor(x)) stop("Input should be a data.frame, a vector, or a factor.")
   prepare_4gdx(x,symName,domains,symText)
 }
 
