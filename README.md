@@ -11,6 +11,10 @@ remotes::install_github("christophe-gouel/gamsr");
 
 ## Usage
 
+`gamsr` is just an opinionated interface to GAMS original package
+`gdxrrw` which has to be installed to use `gamsr`. Since `gdxrrw` is not on CRAN
+or a public git repo, the following function takes care of the installation.
+
 Install gdxrrw from [GAMS website](https://support.gams.com/gdxrrw:interfacing_gams_and_r)
 
 ```r
