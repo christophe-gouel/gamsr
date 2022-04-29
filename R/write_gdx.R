@@ -75,7 +75,9 @@ prepare_map4gdx <- function(x, symName, domains, symText, na.rm = TRUE) {
 prepare_par4gdx <- function(x, symName, domains, symText, na.rm = TRUE) {
   if (missing(symName)) symName <- deparse(substitute(x))
   if (symName == ".") symName <- names(x[ncol(x)])
-  for (icol in 1:(ncol(x) - 1)) x[[icol]] <- as.factor(x[[icol]])
+  for (icol in 1:(ncol(x) - 1)) {
+    if (!is.factor(x[[icol]])) x[[icol]] <- as.factor(x[[icol]])
+  }
   prepare_4gdx(x, symName, domains, symText, na.rm)
 }
 
