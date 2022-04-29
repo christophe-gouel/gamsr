@@ -43,7 +43,7 @@ A 'tibble()', a 'data.table', or a 'data.frame'.
 Read gdx files in a tidy way
 }
 \examples{
-fpath <- system.file("extdata", "trnsport.gdx", package="gdxrrw")
+fpath <- system.file("extdata", "trnsport.gdx", package = "gdxrrw")
 read_gdx(fpath, "a")
 read_gdx(fpath, "x")
 read_gdx(fpath, "f")

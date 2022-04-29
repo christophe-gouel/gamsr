@@ -4,10 +4,11 @@
 \alias{prepare_set4gdx}
 \title{Prepare set for export to gdx}
 \usage{
-prepare_set4gdx(x, symName, domains = "*", symText)
+prepare_set4gdx(x, symName, domains = "*", symText, na.rm = TRUE)
 }
 \arguments{
-\item{x}{R variable (data.frame, vector, or factor) to be prepared for exportation.}
+\item{x}{R variable (data.frame, vector, or factor) to be prepared for 
+exportation.}
 
 \item{symName}{Symbol name to be used in gdx file. Use by default the name
 of the variable to be exported.}

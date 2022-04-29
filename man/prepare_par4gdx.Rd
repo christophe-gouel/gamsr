@@ -4,7 +4,7 @@
 \alias{prepare_par4gdx}
 \title{Prepare parameter for export to gdx}
 \usage{
-prepare_par4gdx(x, symName, domains, symText)
+prepare_par4gdx(x, symName, domains, symText, na.rm = TRUE)
 }
 \arguments{
 \item{x}{R variable to be prepared for exportation.}
@@ -17,6 +17,10 @@ the parameter is defined. Default to "*".}
 
 \item{symText}{optional character string defining the explanatory text of
 the variable. Default to "".}
+
+\item{na.rm}{logical. Should missing values be removed? Default to TRUE. For 
+large variable without missing values, using to FALSE can result in 
+significant speedup.}
 }
 \value{
 A 'data.frame' that can be used in the function 'write_gdx'.

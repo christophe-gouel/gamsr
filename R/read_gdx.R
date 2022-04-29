@@ -2,7 +2,8 @@
 
 rgdx.var <- function(gdxName, symName, names = NULL, attr = "l", ...) {
   lt <- gdxrrw::rgdx(gdxName, list(name = symName, field = attr),
-                     squeeze = FALSE, ...)
+    squeeze = FALSE, ...
+  )
   if (is.null(names) | length(names) != (lt[["dim"]] + 1)) {
     domains <- lt[["domains"]]
     defaultDomainsNames <- c(".i", ".j", ".k", ".l")
@@ -12,10 +13,12 @@ rgdx.var <- function(gdxName, symName, names = NULL, attr = "l", ...) {
   }
   colnames(lt[["val"]]) <- names
   dt <- tibble::as_tibble(lt[["val"]])
-  for (set in 1:lt[["dim"]])
+  for (set in 1:lt[["dim"]]) {
     dt[[set]] <- lt[["uels"]][[set]][dt[[set]]]
-  if (attr == "all")
+  }
+  if (attr == "all") {
     dt[["attribute"]] <- lt[["uels"]][[length(lt[["uels"]])]][dt[["attribute"]]]
+  }
   return(dt)
 }
 
@@ -25,20 +28,28 @@ read_gdx_single <- function(file, symName, col_names = NULL, attribute = "l",
   nature <- paste0(
     "parameters"[is.element(symName, fileInfo$parameters)],
     "sets"[is.element(symName, fileInfo$sets)],
-    "variables"[is.element(symName, fileInfo$variables)])
+    "variables"[is.element(symName, fileInfo$variables)]
+  )
   sym <- switch(nature,
-         "parameters" = try(gdxrrw::rgdx.param(file, symName, names = col_names, ...), TRUE),
-         "sets" = gdxrrw::rgdx.set(file, symName, names = col_names, te = te, ...),
-         "variables" = rgdx.var(file, symName, names = col_names, attr = attribute, ...))
+    "parameters" = try(gdxrrw::rgdx.param(file, symName,
+                                          names = col_names, ...), TRUE),
+    "sets" = gdxrrw::rgdx.set(file, symName, names = col_names, te = te, ...),
+    "variables" = rgdx.var(file, symName, names = col_names, 
+                           attr = attribute, ...)
+  )
   if (is.character(sym)) {
     if (is.null(col_names)) col_names <- symName
-    sym <- tibble::enframe(gdxrrw::rgdx.scalar(file, symName), name = NULL, value = col_names)
-  } else sym <- tibble::as_tibble(sym)
+    sym <- tibble::enframe(gdxrrw::rgdx.scalar(file, symName), name = NULL,
+                           value = col_names)
+  } else {
+    sym <- tibble::as_tibble(sym)
+  }
   sym <- switch(data_type,
-                "tb" = sym,
-                "dt" = data.table::as.data.table(sym),
-                "df" = as.data.frame(sym),
-                sym)
+    "tb" = sym,
+    "dt" = data.table::as.data.table(sym),
+    "df" = as.data.frame(sym),
+    sym
+  )
   return(dplyr::mutate(sym, across(where(is.factor), as.character)))
 }
 
@@ -60,8 +71,8 @@ read_gdx_single <- function(file, symName, col_names = NULL, attribute = "l",
 #' '"df"' for a data.frame.
 #' @param ... additional arguments to be passed to gdxrrw functions.
 #' @return A 'tibble()', a 'data.table', or a 'data.frame'.
-#' @examples 
-#' fpath <- system.file("extdata", "trnsport.gdx", package="gdxrrw")
+#' @examples
+#' fpath <- system.file("extdata", "trnsport.gdx", package = "gdxrrw")
 #' read_gdx(fpath, "a")
 #' read_gdx(fpath, "x")
 #' read_gdx(fpath, "f")
@@ -69,14 +80,23 @@ read_gdx_single <- function(file, symName, col_names = NULL, attribute = "l",
 #' @export
 read_gdx <- function(files, symName, col_names = NULL, names = NULL,
                      attribute = "l", data_type = "tb", ...) {
-  read_gdx_fn <- function(file)
-    read_gdx_single(file = file, symName = symName, col_names = col_names,
-                    attribute = attribute, data_type = data_type, ...)
-  if (is.null(names)) {
-    if (length(files) == 1) return(read_gdx_fn(files))
-    else names <- stringr::str_remove(basename(files), ".gdx")
+  read_gdx_fn <- function(file) {
+    read_gdx_single(
+      file = file, symName = symName, col_names = col_names,
+      attribute = attribute, data_type = data_type, ...
+    )
   }
-  return(purrr::map2_dfr(files, names,
-                         function(filename, name)
-                           dplyr::mutate(read_gdx_fn(filename), name = name)))
+  if (is.null(names)) {
+    if (length(files) == 1) {
+      return(read_gdx_fn(files))
+    } else {
+      names <- stringr::str_remove(basename(files), ".gdx")
+    }
+  }
+  return(purrr::map2_dfr(
+    files, names,
+    function(filename, name) {
+      dplyr::mutate(read_gdx_fn(filename), name = name)
+    }
+  ))
 }

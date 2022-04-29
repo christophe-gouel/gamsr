@@ -1,47 +1,43 @@
 ## Launch GAMS
 
-combine.lists <- function(list1, list2)
-{
-   # Combine lists 'list1' and 'list2', giving precedence to elements found in 'list2':
-   # that is, if $something is found in both 'list1' and 'list2',
-   # the new (output) list will have the same values as 'list2' in $something
+combine.lists <- function(list1, list2) {
+  # Combine lists 'list1' and 'list2', giving precedence to elements found in 'list2':
+  # that is, if $something is found in both 'list1' and 'list2',
+  # the new (output) list will have the same values as 'list2' in $something
 
-   # Version 1.0 (August 2017)
-   #
-   # Function developed by
-   # Patrick Belisle
-   # Division of Clinical Epidemiology
-   # McGill University Hospital Center
-   # Montreal, Qc, Can
-   #
-   # patrick.belisle@rimuhc.ca
-   # http://www.medicine.mcgill.ca/epidemiology/Joseph/PBelisle/BetaParmsFromQuantiles.html
-
-
-   list1.names <- names(list1)
-   list2.names <- names(list2)
-
-   new.list <- list1
+  # Version 1.0 (August 2017)
+  #
+  # Function developed by
+  # Patrick Belisle
+  # Division of Clinical Epidemiology
+  # McGill University Hospital Center
+  # Montreal, Qc, Can
+  #
+  # patrick.belisle@rimuhc.ca
+  # http://www.medicine.mcgill.ca/epidemiology/Joseph/PBelisle/BetaParmsFromQuantiles.html
 
 
-   tmp <- match(list2.names, list1.names)
-   w <- which(!is.na(tmp))
+  list1.names <- names(list1)
+  list2.names <- names(list2)
 
-   if (length(w) > 0)
-   {
-     # take values from list2 in matching dimension names
-     tmp <- tmp[!is.na(tmp)]
-     new.list[[tmp]] <- list2[[w]]
+  new.list <- list1
 
-     # append elements of 'list2' with unmatched names
-     new.list <- c(new.list, list2[-w])
-   }
-   else
-   {
-     new.list <- c(new.list, list2)
-   }
 
-   new.list
+  tmp <- match(list2.names, list1.names)
+  w <- which(!is.na(tmp))
+
+  if (length(w) > 0) {
+    # take values from list2 in matching dimension names
+    tmp <- tmp[!is.na(tmp)]
+    new.list[[tmp]] <- list2[[w]]
+
+    # append elements of 'list2' with unmatched names
+    new.list <- c(new.list, list2[-w])
+  } else {
+    new.list <- c(new.list, list2)
+  }
+
+  new.list
 } # end of combine.lists
 
 
@@ -62,33 +58,38 @@ combine.lists <- function(list1, list2)
 gams <- function(gmsfile, options = list(), save,
                  restart, gdx, envvar, ...) {
   # Make a GAMS call using all the provided arguments
-  default_options <- list(lo = 3,
-                          ll = 0,
-                          ps = 0,
-                          pw = 109)
+  default_options <- list(
+    lo = 3,
+    ll = 0,
+    ps = 0,
+    pw = 109
+  )
 
   options <- combine.lists(default_options, options)
-  options <- purrr::map2(options,
-                         names(options),
-                         function(opt_value, opt_name) paste0(opt_name, "=", opt_value))
-  options <- purrr::reduce(options, paste)    
-    
+  options <- purrr::map2(
+    options,
+    names(options),
+    function(opt_value, opt_name) paste0(opt_name, "=", opt_value)
+  )
+  options <- purrr::reduce(options, paste)
+
   save <- ifelse(missing(save), "", paste0("save=", save))
-  
+
   restart <- ifelse(missing(restart), "", paste0("restart=", restart))
-  
+
   gdx <- ifelse(missing(gdx), "", paste0("gdx=", gdx))
 
-  if (missing(envvar)) envvar <- ""
-  else {
-    envvar <- purrr::map2(envvar,
-                          names(envvar),
-                          ~ paste0("--", .y, "=", .x))
-    envvar <- purrr::reduce(envvar, paste)    
+  if (missing(envvar)) {
+    envvar <- ""
+  } else {
+    envvar <- purrr::map2(
+      envvar,
+      names(envvar),
+      ~ paste0("--", .y, "=", .x)
+    )
+    envvar <- purrr::reduce(envvar, paste)
   }
-  
+
   gamscl <- paste("gams ", gmsfile, options, save, restart, gdx, envvar)
   system(gamscl, ...)
 }
-
-

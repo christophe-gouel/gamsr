@@ -4,7 +4,7 @@
 \alias{prepare_map4gdx}
 \title{Prepare mapping for export to gdx}
 \usage{
-prepare_map4gdx(x, symName, domains, symText)
+prepare_map4gdx(x, symName, domains, symText, na.rm = TRUE)
 }
 \arguments{
 \item{x}{R variable to be prepared for exportation.}
