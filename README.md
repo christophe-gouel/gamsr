@@ -37,7 +37,7 @@ a <- data.frame(i = c("a", "b", "c"), val = 1:3)
 a <- prepare_par4gdx(a)
 i <- a[,"i", drop = FALSE]
 i <- prepare_set4gdx(i)
-j <- prepare_set4gdx(1:10)
+j <- prepare_set4gdx(1:10, symName = "j")
 gdxfile <- tempfile(fileext = ".gdx")
 write_gdx(gdxfile, a, i, j)
 ```

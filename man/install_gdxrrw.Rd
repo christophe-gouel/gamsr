@@ -4,16 +4,15 @@
 \alias{install_gdxrrw}
 \title{Install gdxrrw package}
 \usage{
-install_gdxrrw(version = "latest", type = "platform_default")
+install_gdxrrw(version = "latest", ...)
 }
 \arguments{
 \item{version}{character string defining the version of the package to
-install. Default to "latest".}
+install. Default to "latest" for the latest release. Could also be "dev"
+for the development version or a commit, tag, or branch name from the gdxrrw
+repo (<https://github.com/GAMS-dev/gdxrrw>).}
 
-\item{type}{character, indicating the type of package to download and
-install. Possible values are '"platform_default"' (the default) and
-'"source"'. Except on Windows, the platform default is to install from
-source. Any other value will be interpreted as installation from binary.}
+\item{...}{other inputs passed to install_github.}
 }
 \value{
 Invisible 'NULL'.
