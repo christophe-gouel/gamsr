@@ -50,13 +50,15 @@ combine.lists <- function(list1, list2) {
 #' @param restart path to restart file
 #' @param gdx path to gdx file
 #' @param envar list of environmental variables
+#' @param wd working directory from which to launch the file (default to current
+#' working directory)
 #' @return A 'tibble()', a 'data.table', or a 'data.frame'.
 #' @examples
 #' fpath <- file.path(sub(";.*$", "", Sys.getenv("GAMSDIR")), "gamslib_ml", "trnsport.1")
 #' gams(fpath, options = list(output = "NUL", lp = "cplex"))
 #' @export
 gams <- function(gmsfile, options = list(), save,
-                 restart, gdx, envvar, ...) {
+                 restart, gdx, envvar, wd, ...) {
   # Make a GAMS call using all the provided arguments
   default_options <- list(
     lo = 3,
@@ -91,5 +93,11 @@ gams <- function(gmsfile, options = list(), save,
   }
 
   gamscl <- paste("gams ", gmsfile, options, save, restart, gdx, envvar)
+  if (!missing(wd)) {
+    current_wd <- getwd()
+    setwd(wd)
+  }
   system(gamscl, ...)
+  if (!missing(wd)) setwd(current_wd)
+
 }

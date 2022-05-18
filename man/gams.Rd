@@ -4,7 +4,7 @@
 \alias{gams}
 \title{Launch GAMS from command line}
 \usage{
-gams(gmsfile, options = list(), save, restart, gdx, envvar, ...)
+gams(gmsfile, options = list(), save, restart, gdx, envvar, wd, ...)
 }
 \arguments{
 \item{gmsfile}{path to one gms file}
@@ -16,6 +16,9 @@ gams(gmsfile, options = list(), save, restart, gdx, envvar, ...)
 \item{restart}{path to restart file}
 
 \item{gdx}{path to gdx file}
+
+\item{wd}{working directory from which to launch the file (default to current
+working directory)}
 
 \item{envar}{list of environmental variables}
 }
