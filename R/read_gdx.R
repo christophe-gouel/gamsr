@@ -4,7 +4,8 @@
 #'
 #' Read gdx files in a tidy way
 #' @param files path to one or several gdx files
-#' @param symName symbol name to read in the gdx
+#' @param symName symbol name to read in the gdx. If NULL (default) returns a
+#' data.frame of the list of symbols in the gdx.
 #' @param col_names a vector of optional names for the columns.
 #' @param attributes character vector: the attributes to keep for variables,
 #' equations and sets. Possible values are '"l"' (the default) specifies the
@@ -24,18 +25,40 @@
 #' @examples
 #' fpath <- system.file("extdata", "trnsport.gdx", package = "gamsr")
 #' read_gdx(fpath, "a")
+#' read_gdx(fpath)
 #' read_gdx(fpath, "x")
 #' read_gdx(fpath, "f")
 #' read_gdx(fpath, "i", attributes = "te")
 #' @export
 read_gdx <- function(files,
-                     symName,
+                     symName = NULL,
                      col_names = NULL,
                      attributes = "l",
                      data_type = "tb",
                      factors_as_strings = TRUE,
                      names = NULL,
                      names_to = "name") {
+
+  # In the absence of symName returns a data.frame of symbols in the gdx
+  if (is.null(symName)) {
+    gdx_cont <- gamstransfer::Container$new(files)
+    dt <- data.frame(type = "",
+                     symbol = gdx_cont$listSymbols())
+    dt[is.element(dt$symbol, gdx_cont$listVariables()), "type"] <- "variable"
+    dt[is.element(dt$symbol, gdx_cont$listEquations()), "type"] <- "equation"
+    dt[is.element(dt$symbol, gdx_cont$listSets()), "type"] <- "set"
+    dt[is.element(dt$symbol, gdx_cont$listParameters()), "type"] <- "parameter"
+
+    # Change data type
+    dt <-
+      switch(data_type,
+             "tb" = tibble::as_tibble(dt),
+             "dt" = data.table::as.data.table(dt),
+             "df" = dt,
+             dt
+             )
+    return(dt)
+  }
 
   read_gdx_fn <- function(file) {
     read_gdx_single(

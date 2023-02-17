@@ -6,7 +6,7 @@
 \usage{
 read_gdx(
   files,
-  symName,
+  symName = NULL,
   col_names = NULL,
   attributes = "l",
   data_type = "tb",
@@ -18,7 +18,8 @@ read_gdx(
 \arguments{
 \item{files}{path to one or several gdx files}
 
-\item{symName}{symbol name to read in the gdx}
+\item{symName}{symbol name to read in the gdx. If NULL (default) returns a
+data.frame of the list of symbols in the gdx.}
 
 \item{col_names}{a vector of optional names for the columns.}
 
@@ -50,6 +51,7 @@ Read gdx files in a tidy way
 \examples{
 fpath <- system.file("extdata", "trnsport.gdx", package = "gamsr")
 read_gdx(fpath, "a")
+read_gdx(fpath)
 read_gdx(fpath, "x")
 read_gdx(fpath, "f")
 read_gdx(fpath, "i", attributes = "te")
