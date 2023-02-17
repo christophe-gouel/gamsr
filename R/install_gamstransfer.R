@@ -13,20 +13,24 @@ install_gamstransfer <- function(type = "binary", ...) {
   if (type == "binary") {
     sysname <- Sys.info()[["sysname"]]
     if (sysname == "Windows") {
-      install.packages(file.path(gamstransfer_path, "gamstransfer.zip"),
+      install.packages(file.path(gamstransfer_path, "binary",
+                                 "gamstransfer.zip"),
                        type = "binary",
                        ...)
     } else if (sysname == "Linux") {
-      install.packages(file.path(gamstransfer_path, "gamstransfer.tar.gz"),
+      install.packages(file.path(gamstransfer_path, "binary",
+                                 "gamstransfer.tar.gz"),
                        type = "binary",
                        ...)
     } else if (sysname == "Darwin") {
-      install.packages(file.path(gamstransfer_path, "gamstransfer.tgz"),
+      install.packages(file.path(gamstransfer_path, "binary",
+                                 "gamstransfer.tgz"),
                        type = "binary",
                        ...)
     }
   } else {
-    install.packages(file.path(gamstransfer_path, "gamstransfer_r.tar.gz"),
+    install.packages(file.path(gamstransfer_path, "source",
+                               "gamstransfer_r.tar.gz"),
                      dependencies = TRUE,
                      ...)
   }
