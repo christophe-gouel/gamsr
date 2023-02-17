@@ -1,9 +1,9 @@
 ## Launch GAMS
 
 combine.lists <- function(list1, list2) {
-  # Combine lists 'list1' and 'list2', giving precedence to elements found in 'list2':
-  # that is, if $something is found in both 'list1' and 'list2',
-  # the new (output) list will have the same values as 'list2' in $something
+  # Combine lists 'list1' and 'list2', giving precedence to elements found in
+  # 'list2': that is, if $something is found in both 'list1' and 'list2', the
+  # new (output) list will have the same values as 'list2' in $something
 
   # Version 1.0 (August 2017)
   #
@@ -54,7 +54,8 @@ combine.lists <- function(list1, list2) {
 #' working directory)
 #' @return A 'tibble()', a 'data.table', or a 'data.frame'.
 #' @examples
-#' fpath <- file.path(sub(";.*$", "", Sys.getenv("GAMSDIR")), "gamslib_ml", "trnsport.1")
+#' fpath <- file.path(sub(";.*$", "", Sys.getenv("GAMSDIR")),
+#'                    "gamslib_ml", "trnsport.1")
 #' gams(fpath, options = list(output = "NUL", lp = "cplex"))
 #' @export
 gams <- function(gmsfile, options = list(), save,

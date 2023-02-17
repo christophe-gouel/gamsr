@@ -29,6 +29,7 @@ A 'tibble()', a 'data.table', or a 'data.frame'.
 Launch GAMS from command line
 }
 \examples{
-fpath <- file.path(sub(";.*$", "", Sys.getenv("GAMSDIR")), "gamslib_ml", "trnsport.1")
+fpath <- file.path(sub(";.*$", "", Sys.getenv("GAMSDIR")),
+                   "gamslib_ml", "trnsport.1")
 gams(fpath, options = list(output = "NUL", lp = "cplex"))
 }

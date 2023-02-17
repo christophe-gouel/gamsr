@@ -1,14 +1,21 @@
 Package: gamsr
 Type: Package
 Title: Tidy IO between GAMS and R
-Version: 0.0.6.0
-RoxygenNote: 7.2.0
+Version: 0.0.7.0
+RoxygenNote: 7.2.3
 Imports:
     data.table,
-    dplyr,
-    purrr,
-    reshape2,
-    rvest (>= 1.0.0),
+    dplyr (>= 1.0.0),
+    purrr (>= 1.0.0),
     stringr,
-    tibble
+    tibble,
+    Rcpp (>= 1.0.6),
+    R6 (>= 2.5.1),
+    R.utils (>= 2.11.0),
+    collections(>= 0.3.6)
+Author: Christophe Gouel
+Maintainer: Christophe Gouel <christophe.gouel@inrae.fr>
+Description: Tools for tidy interactions between R and GAMS
+License: MIT + file LICENSE
 URL: https://github.com/christophe-gouel/gamsr
+Encoding: UTF-8

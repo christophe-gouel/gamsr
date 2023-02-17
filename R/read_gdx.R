@@ -1,89 +1,47 @@
 ## Read GDX file
 
-rgdx.var <- function(gdxName, symName, names = NULL, attr = "l", ...) {
-  lt <- gdxrrw::rgdx(gdxName, list(name = symName, field = attr),
-    squeeze = FALSE, ...
-  )
-  if (is.null(names) | length(names) != (lt[["dim"]] + 1)) {
-    domains <- lt[["domains"]]
-    defaultDomainsNames <- c(".i", ".j", ".k", ".l")
-    domains[domains == "*"] <- defaultDomainsNames[1:sum(domains == "*")]
-    domains[domains == "_field"] <- "attribute"
-    names <- c(domains, symName)
-  }
-  colnames(lt[["val"]]) <- names
-  dt <- tibble::as_tibble(lt[["val"]])
-  for (set in 1:lt[["dim"]]) {
-    dt[[set]] <- lt[["uels"]][[set]][dt[[set]]]
-  }
-  if (attr == "all") {
-    dt[["attribute"]] <- lt[["uels"]][[length(lt[["uels"]])]][dt[["attribute"]]]
-  }
-  return(dt)
-}
-
-read_gdx_single <- function(file, symName, col_names = NULL, attribute = "l",
-                            te = TRUE, data_type = "tb", ...) {
-  fileInfo <- gdxrrw::gdxInfo(file, dump = FALSE, returnList = TRUE)
-  nature <- paste0(
-    "parameters"[is.element(symName, fileInfo$parameters)],
-    "sets"[is.element(symName, fileInfo$sets)],
-    "variables"[is.element(symName, fileInfo$variables)]
-  )
-  sym <- switch(nature,
-    "parameters" = try(gdxrrw::rgdx.param(file, symName,
-                                          names = col_names, ...), TRUE),
-    "sets" = gdxrrw::rgdx.set(file, symName, names = col_names, te = te, ...),
-    "variables" = rgdx.var(file, symName, names = col_names, 
-                           attr = attribute, ...)
-  )
-  if (is.character(sym)) {
-    if (is.null(col_names)) col_names <- symName
-    sym <- tibble::enframe(gdxrrw::rgdx.scalar(file, symName), name = NULL,
-                           value = col_names)
-  } else {
-    sym <- tibble::as_tibble(sym)
-  }
-  sym <- switch(data_type,
-    "tb" = sym,
-    "dt" = data.table::as.data.table(sym),
-    "df" = as.data.frame(sym),
-    sym
-  )
-  return(dplyr::mutate(sym, across(where(is.factor), as.character)))
-}
-
 #' Read gdx files
 #'
 #' Read gdx files in a tidy way
 #' @param files path to one or several gdx files
 #' @param symName symbol name to read in the gdx
-#' @param col_names a vector of optional names for the columns. The default is
-#' to use the names in the gdx if existing.
-#' @param names a vector of optional names in case several gdx files are
-#' imported. The default is to use the gdx file name.
-#' @param attribute character string: the attribute for variables. Possible
-#' values are '"l"' (the default) specifies the level, '"m"' specificies the
-#' marginal, '"lo"' specificies the lower bound, and '"up"' specifies the upper
-#' bound.
+#' @param col_names a vector of optional names for the columns.
+#' @param attributes character vector: the attributes to keep for variables,
+#' equations and sets. Possible values are '"l"' (the default) specifies the
+#' level, '"m"' specificies the marginal, '"lo"' specificies the lower bound,
+#' '"up"' specifies the upper bound, '"s"' specificies the scale, and '"te"'
+#' specified the text for sets.
 #' @param data_type character string: the type of data to output. Possible
 #' values are '"tb"' (the default) for a tibble, '"dt"' for a data.table, and
 #' '"df"' for a data.frame.
-#' @param ... additional arguments to be passed to gdxrrw functions.
+#' @param factors_as_string logical (default is TRUE) specifying whether factors
+#' should be transformed in strings.
+#' @param names a vector of optional names in case several gdx files are
+#' imported. The default is to use the gdx file name.
+#' @param names_to character string specifying the new column to create to
+#' store the file names.
 #' @return A 'tibble()', a 'data.table', or a 'data.frame'.
 #' @examples
-#' fpath <- system.file("extdata", "trnsport.gdx", package = "gdxrrw")
+#' fpath <- system.file("extdata", "trnsport.gdx", package = "gamsr")
 #' read_gdx(fpath, "a")
 #' read_gdx(fpath, "x")
 #' read_gdx(fpath, "f")
-#' read_gdx(fpath, "i", te = FALSE)
+#' read_gdx(fpath, "i", attributes = "te")
 #' @export
-read_gdx <- function(files, symName, col_names = NULL, names = NULL,
-                     attribute = "l", data_type = "tb", ...) {
+read_gdx <- function(files,
+                     symName,
+                     col_names = NULL,
+                     attributes = "l",
+                     data_type = "tb",
+                     factors_as_strings = TRUE,
+                     names = NULL,
+                     names_to = "name") {
+
   read_gdx_fn <- function(file) {
     read_gdx_single(
       file = file, symName = symName, col_names = col_names,
-      attribute = attribute, data_type = data_type, ...
+      attributes = attributes, data_type = data_type,
+      factors_as_strings = factors_as_strings
     )
   }
   if (is.null(names)) {
@@ -93,10 +51,63 @@ read_gdx <- function(files, symName, col_names = NULL, names = NULL,
       names <- stringr::str_remove(basename(files), ".gdx")
     }
   }
-  return(purrr::map2_dfr(
-    files, names,
-    function(filename, name) {
-      dplyr::mutate(read_gdx_fn(filename), name = name)
+
+  dt <- lapply(files, read_gdx_fn)
+  names(dt) <- names
+  dt <- purrr::list_rbind(dt, names_to = names_to)
+  return(dt)
+}
+
+read_gdx_single <- function(file,
+                            symName,
+                            col_names,
+                            attributes,
+                            data_type,
+                            factors_as_strings) {
+
+  # Import data
+  gdx_cont <- gamstransfer::Container$new()
+  gdx_cont$read(file, symName)
+  dt <- gdx_cont[symName]$records
+
+  # Remove unselected attributes
+  if (attributes != "all") {
+    if (is.element("level", colnames(dt))) {
+      variable_attributes <- c(
+        l = "level",
+        m = "marginal",
+        lo = "lower",
+        up = "upper",
+        s = "scale"
+      )
+      col_to_remove <- variable_attributes[setdiff(names(variable_attributes),
+                                                   attributes)]
+      dt[col_to_remove] <- NULL
+    } else if (is.element("element_text", colnames(dt)) &&
+                 !is.element("te", attributes)) {
+      dt["element_text"] <- NULL
     }
-  ))
+  }
+
+  # Rename column
+  if (!is.null(col_names)) {
+    select_colnames <- 1:min(length(col_names),ncol(dt))  # nolint
+    colnames(dt)[select_colnames] <- col_names[select_colnames]
+  }
+
+  # Change data type
+  dt <-
+    switch(data_type,
+           "tb" = tibble::as_tibble(dt),
+           "dt" = data.table::as.data.table(dt),
+           "df" = dt,
+           dt
+           )
+
+  # Convert factods to strings
+  if (factors_as_strings)
+    dt <- dplyr::mutate(dt,
+                        dplyr::across(dplyr::where(is.factor), as.character))
+
+  return(dt)
 }

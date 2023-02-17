@@ -12,34 +12,21 @@ remotes::install_github("christophe-gouel/gamsr");
 ## Usage
 
 `gamsr` is just an opinionated interface to GAMS original package
-`gdxrrw` which has to be installed to use `gamsr`. Since `gdxrrw` is not on CRAN
+`gamstransfer` which has to be installed to use `gamsr`. Since `gamstransfer` is not on CRAN
 or a public git repo, the following function takes care of the installation.
 
-Install gdxrrw from [GAMS website](https://support.gams.com/gdxrrw:interfacing_gams_and_r)
+Install gamstransfer from the local GAMS installation provided that the environment variable GAMSDIR is defined.
 
 ```r
-install_gdxrrw() # Install latest version
-install_gdxrrw(version = "1.0.6") # Install a specific version
+install_gamstransfer()
 ```
 
 Read gdx files
 
 ```r
-fpath <- system.file("extdata", "trnsport.gdx", package = "gdxrrw")
+fpath <- system.file("extdata", "trnsport.gdx", package = "gamsr")
 read_gdx(fpath, "a") # as tibble
 read_gdx(fpath, "a", data_type = "dt") # as data.table
-```
-
-Write gdx files
-
-```r
-a <- data.frame(i = c("a", "b", "c"), val = 1:3)
-a <- prepare_par4gdx(a)
-i <- a[,"i", drop = FALSE]
-i <- prepare_set4gdx(i)
-j <- prepare_set4gdx(1:10, symName = "j")
-gdxfile <- tempfile(fileext = ".gdx")
-write_gdx(gdxfile, a, i, j)
 ```
 
 Launch GAMS from R

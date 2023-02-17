@@ -8,10 +8,11 @@ read_gdx(
   files,
   symName,
   col_names = NULL,
-  names = NULL,
-  attribute = "l",
+  attributes = "l",
   data_type = "tb",
-  ...
+  factors_as_strings = TRUE,
+  names = NULL,
+  names_to = "name"
 )
 }
 \arguments{
@@ -19,22 +20,26 @@ read_gdx(
 
 \item{symName}{symbol name to read in the gdx}
 
-\item{col_names}{a vector of optional names for the columns. The default is
-to use the names in the gdx if existing.}
+\item{col_names}{a vector of optional names for the columns.}
 
-\item{names}{a vector of optional names in case several gdx files are
-imported. The default is to use the gdx file name.}
-
-\item{attribute}{character string: the attribute for variables. Possible
-values are '"l"' (the default) specifies the level, '"m"' specificies the
-marginal, '"lo"' specificies the lower bound, and '"up"' specifies the upper
-bound.}
+\item{attributes}{character vector: the attributes to keep for variables,
+equations and sets. Possible values are '"l"' (the default) specifies the
+level, '"m"' specificies the marginal, '"lo"' specificies the lower bound,
+'"up"' specifies the upper bound, '"s"' specificies the scale, and '"te"'
+specified the text for sets.}
 
 \item{data_type}{character string: the type of data to output. Possible
 values are '"tb"' (the default) for a tibble, '"dt"' for a data.table, and
 '"df"' for a data.frame.}
 
-\item{...}{additional arguments to be passed to gdxrrw functions.}
+\item{names}{a vector of optional names in case several gdx files are
+imported. The default is to use the gdx file name.}
+
+\item{names_to}{character string specifying the new column to create to
+store the file names.}
+
+\item{factors_as_string}{logical (default is TRUE) specifying whether factors
+should be transformed in strings.}
 }
 \value{
 A 'tibble()', a 'data.table', or a 'data.frame'.
@@ -43,9 +48,9 @@ A 'tibble()', a 'data.table', or a 'data.frame'.
 Read gdx files in a tidy way
 }
 \examples{
-fpath <- system.file("extdata", "trnsport.gdx", package = "gdxrrw")
+fpath <- system.file("extdata", "trnsport.gdx", package = "gamsr")
 read_gdx(fpath, "a")
 read_gdx(fpath, "x")
 read_gdx(fpath, "f")
-read_gdx(fpath, "i", te = FALSE)
+read_gdx(fpath, "i", attributes = "te")
 }
