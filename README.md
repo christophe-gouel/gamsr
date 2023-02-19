@@ -1,5 +1,7 @@
 # gamsr
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 Tools for tidy interactions between R and GAMS
 
 ## Installation
@@ -44,3 +46,7 @@ furrr::future_walk(1:10,
 				          gdx = paste0(.x, ".gdx")))
 read_gdx(paste0(1:10, ".gdx"), "a")
 ```
+
+## Compatibility with GAMS
+
+This version of `gamsr` uses [GAMS Transfer R](https://www.gams.com/latest/docs/API_R_GAMSTRANSFER.html) as a backend. GAMS Transfer R has been introduced with GAMS 40.1.0. Previous GAMS releases used [GDXRRW](https://github.com/GAMS-dev/gdxrrw) to interact with R. The last version of `gamsr` compatible with GDXRRW can be found in [commit 17470d3](https://github.com/christophe-gouel/gamsr/tree/17470d33edf686c280df5ad9580ed375b9b2731a).
