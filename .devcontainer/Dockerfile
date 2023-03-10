@@ -13,3 +13,4 @@ RUN mkdir /opt/gams &&\
     rm linux_x64_64_sfx.exe
 
 ENV PATH="/opt/gams/gams${GAMS_MAJOR}.${GAMS_MINOR}_linux_x64_64_sfx:${PATH}"
+ENV GAMSDIR="/opt/gams/gams${GAMS_MAJOR}.${GAMS_MINOR}_linux_x64_64_sfx"
