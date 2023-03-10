@@ -1,7 +1,7 @@
 Package: gamsr
 Type: Package
 Title: Tidy IO between GAMS and R
-Version: 0.0.7.0
+Version: 0.0.8.0
 RoxygenNote: 7.2.3
 Imports:
     data.table,
@@ -12,10 +12,12 @@ Imports:
     Rcpp (>= 1.0.6),
     R6 (>= 2.5.1),
     R.utils (>= 2.11.0),
-    collections(>= 0.3.6)
+    collections(>= 0.3.6),
+    utils,
+    gamstransfer
 Author: Christophe Gouel
 Maintainer: Christophe Gouel <christophe.gouel@inrae.fr>
-Description: Tools for tidy interactions between R and GAMS
+Description: Tools for tidy interactions between R and GAMS.
 License: MIT + file LICENSE
 URL: https://github.com/christophe-gouel/gamsr
 Encoding: UTF-8

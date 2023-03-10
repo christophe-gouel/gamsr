@@ -49,9 +49,10 @@ combine.lists <- function(list1, list2) {
 #' @param save path to restart file
 #' @param restart path to restart file
 #' @param gdx path to gdx file
-#' @param envar list of environmental variables
+#' @param envvar list of environmental variables
 #' @param wd working directory from which to launch the file (default to current
 #' working directory)
+#' @param ... further argument to be passed to 'system'
 #' @return A 'tibble()', a 'data.table', or a 'data.frame'.
 #' @examples
 #' fpath <- file.path(sub(";.*$", "", Sys.getenv("GAMSDIR")),

@@ -33,14 +33,14 @@ specified the text for sets.}
 values are '"tb"' (the default) for a tibble, '"dt"' for a data.table, and
 '"df"' for a data.frame.}
 
+\item{factors_as_strings}{logical (default is TRUE) specifying whether factors
+should be transformed in strings.}
+
 \item{names}{a vector of optional names in case several gdx files are
 imported. The default is to use the gdx file name.}
 
 \item{names_to}{character string specifying the new column to create to
 store the file names.}
-
-\item{factors_as_string}{logical (default is TRUE) specifying whether factors
-should be transformed in strings.}
 }
 \value{
 A 'tibble()', a 'data.table', or a 'data.frame'.

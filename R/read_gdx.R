@@ -15,7 +15,7 @@
 #' @param data_type character string: the type of data to output. Possible
 #' values are '"tb"' (the default) for a tibble, '"dt"' for a data.table, and
 #' '"df"' for a data.frame.
-#' @param factors_as_string logical (default is TRUE) specifying whether factors
+#' @param factors_as_strings logical (default is TRUE) specifying whether factors
 #' should be transformed in strings.
 #' @param names a vector of optional names in case several gdx files are
 #' imported. The default is to use the gdx file name.

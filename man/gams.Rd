@@ -17,10 +17,12 @@ gams(gmsfile, options = list(), save, restart, gdx, envvar, wd, ...)
 
 \item{gdx}{path to gdx file}
 
+\item{envvar}{list of environmental variables}
+
 \item{wd}{working directory from which to launch the file (default to current
 working directory)}
 
-\item{envar}{list of environmental variables}
+\item{...}{further argument to be passed to 'system'}
 }
 \value{
 A 'tibble()', a 'data.table', or a 'data.frame'.
