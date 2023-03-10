@@ -1,0 +1,9 @@
+{
+  "name": "GAMS",
+  "build": {
+    "dockerfile": "Dockerfile",
+  },
+    "extensions": [
+	"lolow.gams"
+    ],
+}
