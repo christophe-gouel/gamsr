@@ -4,6 +4,7 @@
     "dockerfile": "Dockerfile",
   },
     "extensions": [
-	"lolow.gams"
+	"lolow.gams",
+	"REditorSupport.r"
     ],
 }
