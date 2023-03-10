@@ -13,8 +13,7 @@ Imports:
     R6 (>= 2.5.1),
     R.utils (>= 2.11.0),
     collections(>= 0.3.6),
-    utils,
-    gamstransfer
+    utils
 Author: Christophe Gouel
 Maintainer: Christophe Gouel <christophe.gouel@inrae.fr>
 Description: Tools for tidy interactions between R and GAMS.
