@@ -9,16 +9,11 @@ install_gamstransfer <- function(type = "binary", ...) {
   gams_path <- where_is_gams()
   gamstransfer_path <- file.path(gams_path, "apifiles", "R", "gamstransfer")
 
-  if (type == "binary") {
+  if (type == "binary" && sysname != "Linux") {
     sysname <- Sys.info()[["sysname"]]
     if (sysname == "Windows") {
       utils::install.packages(file.path(gamstransfer_path, "binary",
                                         "gamstransfer.zip"),
-                              type = "binary",
-                              ...)
-    } else if (sysname == "Linux") {
-      utils::install.packages(file.path(gamstransfer_path, "binary",
-                                        "gamstransfer.tar.gz"),
                               type = "binary",
                               ...)
     } else if (sysname == "Darwin") {
