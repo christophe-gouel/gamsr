@@ -1,0 +1,30 @@
+name: Test gamsr package
+
+env:
+  GAMS_MAJOR: 42
+  GAMS_MINOR: 3
+  GAMS_MAINT: 0
+
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+
+      - uses: r-lib/actions/setup-r-dependencies@v2
+          
+      - name: Install GAMS
+        run: |
+          mkdir /opt/gams
+          cd /opt/gams
+          wget https://d37drm4t2jghv5.cloudfront.net/distributions/${GAMS_MAJOR}.${GAMS_MINOR}.${GAMS_MAINT}/linux/linux_x64_64_sfx.exe
+         chmod a+x linux_x64_64_sfx.exe
+         ./linux_x64_64_sfx.exe
+         rm linux_x64_64_sfx.exe
+         echo "/opt/gams/gams${GAMS_MAJOR}.${GAMS_MINOR}_linux_x64_64_sfx" >> $GITHUB_PATH
+         echo -e $GAMSLICE > /opt/gams/gams${GAMS_MAJOR}.${GAMS_MINOR}_linux_x64_64_sfx/gamslice.txt
