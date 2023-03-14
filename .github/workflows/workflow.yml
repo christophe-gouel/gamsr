@@ -28,3 +28,8 @@ jobs:
           rm linux_x64_64_sfx.exe
           echo "/opt/gams/gams${GAMS_MAJOR}.${GAMS_MINOR}_linux_x64_64_sfx" >> $GITHUB_PATH
           echo -e $GAMSLICE > /opt/gams/gams${GAMS_MAJOR}.${GAMS_MINOR}_linux_x64_64_sfx/gamslice.txt
+
+      - name: Install gamstransfer
+        run: Rscript -e "gamsr::install_gamstransfer()"
+
+      - uses: r-lib/actions/check-r-package@v2
