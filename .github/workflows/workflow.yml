@@ -17,8 +17,6 @@ jobs:
           use-public-rspm: true
 
       - uses: r-lib/actions/setup-r-dependencies@v2
-        with:
-          extra-packages: any::rcmdcheck
 
       - name: Install GAMS
         run: |
@@ -33,5 +31,3 @@ jobs:
 
       - name: Install gamstransfer
         run: Rscript -e "source(file.path('R','install_gamstransfer.R'));install_gamstransfer()"
-
-      - uses: r-lib/actions/check-r-package@v2

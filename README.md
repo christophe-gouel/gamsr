@@ -1,7 +1,6 @@
 # gamsr
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![R-CMD-check](https://github.com/tidyverse/dplyr/actions/workflows/workflow.yml/badge.svg)](https://github.com/tidyverse/dplyr/actions/workflows/workflow.yml)
 
 Tools for tidy interactions between R and GAMS
 
