@@ -1,6 +1,7 @@
 # gamsr
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![R-CMD-check](https://github.com/tidyverse/dplyr/actions/workflows/workflow.yml/badge.svg)](https://github.com/tidyverse/dplyr/actions/workflows/workflow.yml)
 
 Tools for tidy interactions between R and GAMS
 
@@ -34,7 +35,7 @@ read_gdx(fpath, "a", data_type = "dt") # as data.table
 Launch GAMS from R
 
 ```r
-fpath <- file.path(sub(";.*$", "", Sys.getenv("GAMSDIR")), "gamslib_ml", "trnsport.1")
+fpath <- file.path(where_is_gams(), "gamslib_ml", "trnsport.1")
 gams(fpath, options = list(output = "NUL", lp = "cplex"))
 ```
 
