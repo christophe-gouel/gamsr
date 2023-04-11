@@ -70,5 +70,7 @@ where_is_gams <- function() {
     return(gams_path2)
   } else if (length(gams_path3) != 0) {
     return(gams_path3)
-  } else stop("Unable to find GAMS")
+  } else {
+    stop("Unable to find GAMS")
+  }
 }

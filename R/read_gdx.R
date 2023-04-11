@@ -4,7 +4,7 @@
 #'
 #' Read gdx files in a tidy way
 #' @param files path to one or several gdx files
-#' @param symName symbol name to read in the gdx. If NULL (default) returns a
+#' @param symbol symbol name to read in the gdx. If NULL (default) returns a
 #' data.frame of the list of symbols in the gdx.
 #' @param col_names a vector of optional names for the columns.
 #' @param attributes character vector: the attributes to keep for variables,
@@ -15,8 +15,8 @@
 #' @param data_type character string: the type of data to output. Possible
 #' values are '"tb"' (the default) for a tibble, '"dt"' for a data.table, and
 #' '"df"' for a data.frame.
-#' @param factors_as_strings logical (default is TRUE) specifying whether factors
-#' should be transformed in strings.
+#' @param factors_as_strings logical (default is TRUE) specifying whether
+#' factors should be transformed in strings.
 #' @param names a vector of optional names in case several gdx files are
 #' imported. The default is to use the gdx file name.
 #' @param names_to character string specifying the new column to create to
@@ -31,7 +31,7 @@
 #' read_gdx(fpath, "i", attributes = "te")
 #' @export
 read_gdx <- function(files,
-                     symName = NULL,
+                     symbol = NULL,
                      col_names = NULL,
                      attributes = "l",
                      data_type = "tb",
@@ -39,9 +39,12 @@ read_gdx <- function(files,
                      names = NULL,
                      names_to = "name") {
 
-  # In the absence of symName returns a data.frame of symbols in the gdx
-  if (is.null(symName)) {
-    gdx_cont <- gamstransfer::Container$new(files)
+  gdx_cont <- gamstransfer::ConstContainer$new(loadFrom = files)
+
+  if (!is.null(symbol)) has_symbol <- gdx_cont$hasSymbols(symbol)
+
+  # In the absence of symbol_name returns a data.frame of symbols in the gdx
+  if (is.null(symbol) || !has_symbol) {
     dt <- data.frame(type = "",
                      symbol = gdx_cont$listSymbols())
     dt[is.element(dt$symbol, gdx_cont$listVariables()), "type"] <- "variable"
@@ -57,13 +60,22 @@ read_gdx <- function(files,
              "df" = dt,
              dt
              )
-    return(dt)
+    if (is.null(symbol)) {
+      return(dt)
+    } else {
+      message(paste0("The requested symbol ", symbol, " does not exist in the gdx file.\nHere is the list of available symbols:"))
+      print(tibble::as_tibble(dt), n = Inf)
+      return(invisible())
+    }
   }
 
   read_gdx_fn <- function(file) {
     read_gdx_single(
-      file = file, symName = symName, col_names = col_names,
-      attributes = attributes, data_type = data_type,
+      file = file,
+      symbol = symbol,
+      col_names = col_names,
+      attributes = attributes,
+      data_type = data_type,
       factors_as_strings = factors_as_strings
     )
   }
@@ -82,16 +94,16 @@ read_gdx <- function(files,
 }
 
 read_gdx_single <- function(file,
-                            symName,
+                            symbol,
                             col_names,
                             attributes,
                             data_type,
                             factors_as_strings) {
 
   # Import data
-  gdx_cont <- gamstransfer::Container$new()
-  gdx_cont$read(file, symName)
-  dt <- gdx_cont[symName]$records
+  gdx_cont <- gamstransfer::ConstContainer$new()
+  gdx_cont$read(loadFrom = file, symbols = symbol)
+  dt <- gdx_cont[symbol]$records
 
   # Remove unselected attributes
   if (attributes != "all") {
@@ -127,10 +139,10 @@ read_gdx_single <- function(file,
            dt
            )
 
-  # Convert factods to strings
+  # Convert factors to strings
   if (factors_as_strings)
     dt <- dplyr::mutate(dt,
-                        dplyr::across(dplyr::where(is.factor), as.character))
+                        dplyr::across(tidyselect::where(is.factor), as.character))
 
   return(dt)
 }

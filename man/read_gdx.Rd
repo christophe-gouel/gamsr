@@ -6,7 +6,7 @@
 \usage{
 read_gdx(
   files,
-  symName = NULL,
+  symbol = NULL,
   col_names = NULL,
   attributes = "l",
   data_type = "tb",
@@ -18,7 +18,7 @@ read_gdx(
 \arguments{
 \item{files}{path to one or several gdx files}
 
-\item{symName}{symbol name to read in the gdx. If NULL (default) returns a
+\item{symbol}{symbol name to read in the gdx. If NULL (default) returns a
 data.frame of the list of symbols in the gdx.}
 
 \item{col_names}{a vector of optional names for the columns.}
@@ -33,8 +33,8 @@ specified the text for sets.}
 values are '"tb"' (the default) for a tibble, '"dt"' for a data.table, and
 '"df"' for a data.frame.}
 
-\item{factors_as_strings}{logical (default is TRUE) specifying whether factors
-should be transformed in strings.}
+\item{factors_as_strings}{logical (default is TRUE) specifying whether
+factors should be transformed in strings.}
 
 \item{names}{a vector of optional names in case several gdx files are
 imported. The default is to use the gdx file name.}

@@ -29,6 +29,7 @@ Read gdx files
 fpath <- system.file("extdata", "trnsport.gdx", package = "gamsr")
 read_gdx(fpath, "a") # as tibble
 read_gdx(fpath, "a", data_type = "dt") # as data.table
+read_gdx(fpath) # Return a data.frame with the list of available symbols
 ```
 
 Launch GAMS from R
