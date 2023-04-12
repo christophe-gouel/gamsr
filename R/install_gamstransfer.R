@@ -57,11 +57,7 @@ where_is_gams <- function() {
     return(gams_path)
   }
 
-  gams_path1 <-
-    switch(sysname,
-           Windows = system("where.exe gams.exe", intern = TRUE),
-           system("which gams", intern = TRUE))
-  gams_path1 <- dirname(gams_path1)
+  gams_path1 <- dirname(Sys.which("gams"))
   gams_path2 <- sub(";.*$", "", Sys.getenv("GAMSDIR"))
   gams_path3 <- find_in_default_path(sysname)
   if (length(gams_path1 != 0)) {
