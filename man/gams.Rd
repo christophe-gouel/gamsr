@@ -20,10 +20,19 @@ gams(gmsfile, options = list(), save, restart, gdx, envvar, wd, ...)
 \item{wd}{working directory from which to launch the file (default to current
 working directory)}
 
+\item{...}{further argument to be passed to 'system'}
+
 \item{envar}{list of environmental variables}
 }
 \value{
-A 'tibble()', a 'data.table', or a 'data.frame'.
+A 'tibble()' with two columns: 'gmsfile' containing the name of the
+gms file that was launched and 'return_code' containing the return code
+following the call. The most standard codes are
+- 0 for normal return
+- 2 for compilation error
+- 3 for execution error
+see <https://www.gams.com/44/docs/UG_GAMSReturnCodes.html#UG_GAMSReturnCodes_ListOfErrorCodes>
+for the full list of GAMS return codes.
 }
 \description{
 Launch GAMS from command line
@@ -31,4 +40,8 @@ Launch GAMS from command line
 \examples{
 fpath <- file.path(sub(";.*$", "", Sys.getenv("GAMSDIR")), "gamslib_ml", "trnsport.1")
 gams(fpath, options = list(output = "NUL", lp = "cplex"))
+}
+\seealso{
+[system()] for the list of options of the command used to launch
+GAMS.
 }
