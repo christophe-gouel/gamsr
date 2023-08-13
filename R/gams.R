@@ -56,9 +56,11 @@ combine.lists <- function(list1, list2) {
 #' @return A 'tibble()' with two columns: 'gmsfile' containing the name of the
 #' gms file that was launched and 'return_code' containing the return code
 #' following the call. The most standard codes are
+#' 
 #' - 0 for normal return
 #' - 2 for compilation error
 #' - 3 for execution error
+#' 
 #' see <https://www.gams.com/44/docs/UG_GAMSReturnCodes.html#UG_GAMSReturnCodes_ListOfErrorCodes>
 #' for the full list of GAMS return codes.
 #' @examples

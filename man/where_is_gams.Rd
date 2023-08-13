@@ -11,7 +11,9 @@ A 'character'.
 }
 \description{
 Three strategies are tried in the following order:
-1. Find GAMS in the path.
-2. Find GAMS from the environment variable GAMSDIR.
-3. Find GAMS in the standard installation folder.
+\enumerate{
+\item Find GAMS in the path.
+\item Find GAMS from the environment variable GAMSDIR.
+\item Find GAMS in the standard installation folder.
+}
 }

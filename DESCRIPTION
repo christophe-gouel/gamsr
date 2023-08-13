@@ -21,3 +21,4 @@ Description: Tools for tidy interactions between R and GAMS.
 License: MIT + file LICENSE
 URL: https://github.com/christophe-gouel/gamsr
 Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
