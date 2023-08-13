@@ -53,11 +53,20 @@ combine.lists <- function(list1, list2) {
 #' @param wd working directory from which to launch the file (default to current
 #' working directory)
 #' @param ... further argument to be passed to 'system'
-#' @return A 'tibble()', a 'data.table', or a 'data.frame'.
+#' @return A 'tibble()' with two columns: 'gmsfile' containing the name of the
+#' gms file that was launched and 'return_code' containing the return code
+#' following the call. The most standard codes are
+#' - 0 for normal return
+#' - 2 for compilation error
+#' - 3 for execution error
+#' see <https://www.gams.com/44/docs/UG_GAMSReturnCodes.html#UG_GAMSReturnCodes_ListOfErrorCodes>
+#' for the full list of GAMS return codes.
 #' @examples
 #' fpath <- file.path(sub(";.*$", "", Sys.getenv("GAMSDIR")),
 #'                    "gamslib_ml", "trnsport.1")
 #' gams(fpath, options = list(output = "NUL", lp = "cplex"))
+#' @seealso [system()] for the list of options of the command used to launch
+#' GAMS.
 #' @export
 gams <- function(gmsfile, options = list(), save,
                  restart, gdx, envvar, wd, ...) {
@@ -99,7 +108,8 @@ gams <- function(gmsfile, options = list(), save,
     current_wd <- getwd()
     setwd(wd)
   }
-  system(gamscl, ...)
+  return_code <- system(gamscl, ...)
   if (!missing(wd)) setwd(current_wd)
 
+  return(tibble::tibble(gmsfile = gmsfile, return_code = return_code))
 }

@@ -13,9 +13,7 @@ remotes::install_github("christophe-gouel/gamsr");
 
 ## Usage
 
-`gamsr` is just an opinionated interface to GAMS original package
-`gamstransfer` which has to be installed to use `gamsr`. Since `gamstransfer` is not on CRAN
-or a public git repo, the following function takes care of the installation.
+`gamsr` is just an opinionated interface to GAMS original package `gamstransfer` which has to be installed to use `gamsr`. Since `gamstransfer` is not on CRAN or a public git repo, the following function takes care of the installation.
 
 Install gamstransfer from the local GAMS installation (the program tries to find GAMS installation from the PATH, the environment variable GAMSDIR, or the usual installation folders, but it may fail if none of this works).
 
