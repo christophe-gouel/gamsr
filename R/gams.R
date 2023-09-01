@@ -83,7 +83,7 @@ extract_status_from_lst <- function(lstfile) {
 #' - 2 for compilation error
 #' - 3 for execution error
 #' 
-#' see <https://www.gams.com/44/docs/UG_GAMSReturnCodes.html#UG_GAMSReturnCodes_ListOfErrorCodes>
+#' see <https://www.gams.com/latest/docs/UG_GAMSReturnCodes.html#UG_GAMSReturnCodes_ListOfErrorCodes>
 #' for the full list of GAMS return codes.
 #' For solver status codes, see <https://www.gams.com/latest/docs/UG_GAMSOutput.html#UG_GAMSOutput_SolverStatus>
 #' and for model status, see <https://www.gams.com/latest/docs/UG_GAMSOutput.html#UG_GAMSOutput_ModelStatus>.
