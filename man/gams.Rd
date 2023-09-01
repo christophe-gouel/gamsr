@@ -25,9 +25,10 @@ working directory)}
 \item{...}{further argument to be passed to 'system'}
 }
 \value{
-A 'tibble()' with two columns: 'gmsfile' containing the name of the
-gms file that was launched and 'return_code' containing the return code
-following the call. The most standard codes are
+A 'tibble()' with three columns: 'gmsfile' containing the name of the
+gms file that was launched, 'return_code' containing the return code
+following the call, and 'status' a list column containing a 'tibble()' of
+solver and model status. The most standard return codes are
 \itemize{
 \item 0 for normal return
 \item 2 for compilation error
@@ -36,6 +37,8 @@ following the call. The most standard codes are
 
 see \url{https://www.gams.com/44/docs/UG_GAMSReturnCodes.html#UG_GAMSReturnCodes_ListOfErrorCodes}
 for the full list of GAMS return codes.
+For solver status codes, see \url{https://www.gams.com/latest/docs/UG_GAMSOutput.html#UG_GAMSOutput_SolverStatus}
+and for model status, see \url{https://www.gams.com/latest/docs/UG_GAMSOutput.html#UG_GAMSOutput_ModelStatus}.
 }
 \description{
 Launch GAMS from command line

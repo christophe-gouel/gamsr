@@ -40,6 +40,27 @@ combine.lists <- function(list1, list2) {
   new.list
 } # end of combine.lists
 
+#' Extract solver and model status from a lst file
+#'
+#' @param lstfile path to the lst file to parse
+#' @return A 'tibble()' with two columns: solver_status and model_status for all
+#' solve summary.
+extract_status_from_lst <- function(lstfile) {
+  text <- readLines(lstfile)
+
+  line_numbers <- grep("**** SOLVER STATUS", text, fixed = TRUE)
+
+  extract_status <- function(string) {
+    as.integer(stringr::str_extract(string, pattern = "[0-9]{1,2}"))
+  }
+  
+  solver_status <- extract_status(text[line_numbers])
+  model_status <- extract_status(text[line_numbers + 1])
+  
+  return(tibble::tibble(solver_status,
+                        model_status))
+
+}
 
 #' Launch GAMS from command line
 #'
@@ -53,9 +74,10 @@ combine.lists <- function(list1, list2) {
 #' @param wd working directory from which to launch the file (default to current
 #' working directory)
 #' @param ... further argument to be passed to 'system'
-#' @return A 'tibble()' with two columns: 'gmsfile' containing the name of the
-#' gms file that was launched and 'return_code' containing the return code
-#' following the call. The most standard codes are
+#' @return A 'tibble()' with three columns: 'gmsfile' containing the name of the
+#' gms file that was launched, 'return_code' containing the return code
+#' following the call, and 'status' a list column containing a 'tibble()' of
+#' solver and model status. The most standard return codes are
 #' 
 #' - 0 for normal return
 #' - 2 for compilation error
@@ -63,6 +85,8 @@ combine.lists <- function(list1, list2) {
 #' 
 #' see <https://www.gams.com/44/docs/UG_GAMSReturnCodes.html#UG_GAMSReturnCodes_ListOfErrorCodes>
 #' for the full list of GAMS return codes.
+#' For solver status codes, see <https://www.gams.com/latest/docs/UG_GAMSOutput.html#UG_GAMSOutput_SolverStatus>
+#' and for model status, see <https://www.gams.com/latest/docs/UG_GAMSOutput.html#UG_GAMSOutput_ModelStatus>.
 #' @examples
 #' fpath <- file.path(sub(";.*$", "", Sys.getenv("GAMSDIR")),
 #'                    "gamslib_ml", "trnsport.1")
@@ -79,6 +103,14 @@ gams <- function(gmsfile, options = list(), save,
     ps = 0,
     pw = 109
   )
+
+  # lst file
+  if (any(c("o", "output") %in% names(options))) {
+    lstfile <- purrr::keep_at(options, c("o", "output"))[[1]]
+  } else {
+    lstfile <- paste0(strsplit(basename(gmsfile),
+                              split = ".", fixed = TRUE)[[1]][1], ".lst")
+  }
 
   options <- combine.lists(default_options, options)
   options <- purrr::map2(
@@ -105,13 +137,20 @@ gams <- function(gmsfile, options = list(), save,
     envvar <- purrr::reduce(envvar, paste)
   }
 
+  
   gamscl <- paste("gams ", gmsfile, options, save, restart, gdx, envvar)
   if (!missing(wd)) {
     current_wd <- getwd()
     setwd(wd)
+    lstfile <- file.path(wd, lstfile)
   }
   return_code <- system(gamscl, ...)
   if (!missing(wd)) setwd(current_wd)
 
-  return(tibble::tibble(gmsfile = gmsfile, return_code = return_code))
+  # Get status codes
+  status <- extract_status_from_lst(lstfile)
+
+  return(tibble::tibble(gmsfile,
+                        return_code,
+                        status = list(status)))
 }
