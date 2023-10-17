@@ -35,7 +35,7 @@ solver and model status. The most standard return codes are
 \item 3 for execution error
 }
 
-see \url{https://www.gams.com/44/docs/UG_GAMSReturnCodes.html#UG_GAMSReturnCodes_ListOfErrorCodes}
+see \url{https://www.gams.com/latest/docs/UG_GAMSReturnCodes.html#UG_GAMSReturnCodes_ListOfErrorCodes}
 for the full list of GAMS return codes.
 For solver status codes, see \url{https://www.gams.com/latest/docs/UG_GAMSOutput.html#UG_GAMSOutput_SolverStatus}
 and for model status, see \url{https://www.gams.com/latest/docs/UG_GAMSOutput.html#UG_GAMSOutput_ModelStatus}.
