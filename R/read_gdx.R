@@ -39,7 +39,7 @@ read_gdx <- function(files,
                      names = NULL,
                      names_to = "name") {
 
-  gdx_cont <- gamstransfer::ConstContainer$new(loadFrom = files)
+  gdx_cont <- gamstransfer::Container$new(loadFrom = files)
 
   if (!is.null(symbol)) has_symbol <- gdx_cont$hasSymbols(symbol)
 
@@ -101,7 +101,7 @@ read_gdx_single <- function(file,
                             factors_as_strings) {
 
   # Import data
-  gdx_cont <- gamstransfer::ConstContainer$new()
+  gdx_cont <- gamstransfer::Container$new()
   gdx_cont$read(loadFrom = file, symbols = symbol)
   dt <- gdx_cont[symbol]$records
 
