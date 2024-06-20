@@ -39,8 +39,8 @@ factors should be transformed in strings.}
 \item{names}{a vector of optional names in case several gdx files are
 imported. The default is to use the gdx file name.}
 
-\item{names_to}{character string specifying the new column to create to
-store the file names.}
+\item{names_to}{character string (default: '"name") specifying the new column
+to create to store the file names.}
 }
 \value{
 A 'tibble()', a 'data.table', or a 'data.frame'.

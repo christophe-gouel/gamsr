@@ -5,22 +5,22 @@
 #' Read gdx files in a tidy way
 #' @param files path to one or several gdx files
 #' @param symbol symbol name to read in the gdx. If NULL (default) returns a
-#' data.frame of the list of symbols in the gdx.
+#'   data.frame of the list of symbols in the gdx.
 #' @param col_names a vector of optional names for the columns.
 #' @param attributes character vector: the attributes to keep for variables,
-#' equations and sets. Possible values are '"l"' (the default) specifies the
-#' level, '"m"' specificies the marginal, '"lo"' specificies the lower bound,
-#' '"up"' specifies the upper bound, '"s"' specificies the scale, and '"te"'
-#' specified the text for sets.
+#'   equations and sets. Possible values are '"l"' (the default) specifies the
+#'   level, '"m"' specificies the marginal, '"lo"' specificies the lower bound,
+#'   '"up"' specifies the upper bound, '"s"' specificies the scale, and '"te"'
+#'   specified the text for sets.
 #' @param data_type character string: the type of data to output. Possible
-#' values are '"tb"' (the default) for a tibble, '"dt"' for a data.table, and
-#' '"df"' for a data.frame.
+#'   values are '"tb"' (the default) for a tibble, '"dt"' for a data.table, and
+#'   '"df"' for a data.frame.
 #' @param factors_as_strings logical (default is TRUE) specifying whether
-#' factors should be transformed in strings.
+#'   factors should be transformed in strings.
 #' @param names a vector of optional names in case several gdx files are
-#' imported. The default is to use the gdx file name.
-#' @param names_to character string specifying the new column to create to
-#' store the file names.
+#'   imported. The default is to use the gdx file name.
+#' @param names_to character string (default: '"name") specifying the new column
+#'   to create to store the file names.
 #' @return A 'tibble()', a 'data.table', or a 'data.frame'.
 #' @examples
 #' fpath <- system.file("extdata", "trnsport.gdx", package = "gamsr")
@@ -39,7 +39,7 @@ read_gdx <- function(files,
                      names = NULL,
                      names_to = "name") {
 
-  gdx_cont <- gamstransfer::Container$new(loadFrom = files)
+  gdx_cont <- gamstransfer::Container$new(loadFrom = files[1])
 
   if (!is.null(symbol)) has_symbol <- gdx_cont$hasSymbols(symbol)
 
@@ -63,7 +63,11 @@ read_gdx <- function(files,
     if (is.null(symbol)) {
       return(dt)
     } else {
-      message(paste0("The requested symbol ", symbol, " does not exist in the gdx file.\nHere is the list of available symbols:"))
+      message(paste0(
+        "The requested symbol ",
+        symbol,
+        " does not exist in the gdx file.\nHere is the list of available symbols:"
+      ))
       print(tibble::as_tibble(dt), n = Inf)
       return(invisible())
     }
@@ -140,9 +144,10 @@ read_gdx_single <- function(file,
            )
 
   # Convert factors to strings
-  if (factors_as_strings)
-    dt <- dplyr::mutate(dt,
-                        dplyr::across(tidyselect::where(is.factor), as.character))
+  if (factors_as_strings) {
+    idx_factor <- (1:ncol(dt))[sapply(dt, is.factor)]
+    for (j in idx_factor) dt[, j] <- as.character(dt[, j])
+  }
 
   return(dt)
 }

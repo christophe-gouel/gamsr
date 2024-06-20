@@ -1,20 +1,15 @@
 Package: gamsr
 Type: Package
 Title: Tidy IO between GAMS and R
-Version: 1.2.0
-RoxygenNote: 7.2.3
+Version: 2.0.0
+RoxygenNote: 7.3.1
 Imports:
     data.table,
-    dplyr (>= 1.0.0),
+    gamstransfer,
     purrr (>= 1.0.0),
     stringr,
     tibble,
     tidyr,
-    tidyselect,
-    Rcpp (>= 1.0.6),
-    R6 (>= 2.5.1),
-    R.utils (>= 2.11.0),
-    collections(>= 0.3.6),
     utils
 Author: Christophe Gouel
 Maintainer: Christophe Gouel <christophe.gouel@inrae.fr>

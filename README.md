@@ -13,13 +13,7 @@ remotes::install_github("christophe-gouel/gamsr");
 
 ## Usage
 
-`gamsr` is just an opinionated interface to GAMS original package `gamstransfer` which has to be installed to use `gamsr`. Since `gamstransfer` is not on CRAN or a public git repo, the following function takes care of the installation.
-
-Install gamstransfer from the local GAMS installation (the program tries to find GAMS installation from the PATH, the environment variable GAMSDIR, or the usual installation folders, but it may fail if none of this works).
-
-```r
-install_gamstransfer()
-```
+`gamsr` is just an opinionated interface to GAMS original package `gamstransfer`. `gamstransfer` is an R package to read and write GAMS gdx files. It is very complete but also a bit complex when one just wants to quickly read from one or several gdx files. Hence, this package.
 
 Read gdx files
 
@@ -40,9 +34,12 @@ gams(fpath, options = list(output = "NUL", lp = "cplex"))
 Parallel launch using `furrr` package and read all the gdx files at once
 
 ```r
-furrr::future_walk(1:10,
-                   ~ gams(fpath, options = list(lo = 0, output = "NUL", lp = "cplex"),
-				          gdx = paste0(.x, ".gdx")))
+# install.packages("furrr")
+furrr::future_walk(
+  1:10,
+  \(num) gams(fpath, options = list(lo = 0, output = "NUL", lp = "cplex"),
+              gdx = paste0(num, ".gdx"))
+)
 read_gdx(paste0(1:10, ".gdx"), "a")
 ```
 

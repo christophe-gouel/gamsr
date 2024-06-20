@@ -1,36 +1,3 @@
-#' Install gamstransfer package
-#'
-#' @param type character, indicating the type of package to install. "binary" is
-#' the default.
-#' @param ... other inputs passed to install.pacakges.
-#' @return Invisible 'NULL'.
-#' @export
-install_gamstransfer <- function(type = "binary", ...) {
-  gams_path <- where_is_gams()
-  gamstransfer_path <- file.path(gams_path, "apifiles", "R", "gamstransfer")
-
-  sysname <- Sys.info()[["sysname"]]
-  if (type == "binary" && sysname != "Linux") {
-    if (sysname == "Windows") {
-      utils::install.packages(file.path(gamstransfer_path, "binary",
-                                        "gamstransfer.zip"),
-                              type = "binary",
-                              ...)
-    } else if (sysname == "Darwin") {
-      utils::install.packages(file.path(gamstransfer_path, "binary",
-                                        "gamstransfer.tgz"),
-                              type = "binary",
-                              ...)
-    }
-  } else {
-    utils::install.packages(file.path(gamstransfer_path, "source",
-                                      "gamstransfer_r.tar.gz"),
-                            dependencies = TRUE,
-                            ...)
-  }
-  return()
-}
-
 #' Find the location of GAMS
 #'
 #' Three strategies are tried in the following order:

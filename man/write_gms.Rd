@@ -29,6 +29,6 @@ df <- data.frame(
 )
 
 # Write the data frame to a GMS file
-write_gms(df, "distance.gms")
+write_gms(df, tempfile())
 
 }

@@ -21,12 +21,12 @@
 #' )
 #' 
 #' # Write the data frame to a GMS file
-#' write_gms(df, "distance.gms")
+#' write_gms(df, tempfile())
 #'
 #' @export
 write_gms <- function(x, file) {
   x_out <- tidyr::unite(x, col = "sets", 1:(ncol(x) - 1), sep = ".")
-  write.table(
+  utils::write.table(
     x = x_out,
     file = file,
     sep = "\t",
