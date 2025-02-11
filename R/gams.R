@@ -40,6 +40,7 @@ combine.lists <- function(list1, list2) {
   new.list
 } # end of combine.lists
 
+
 #' Extract solver and model status from a lst file
 #'
 #' @param lstfile path to the lst file to parse
@@ -53,14 +54,16 @@ extract_status_from_lst <- function(lstfile) {
   extract_status <- function(string) {
     as.integer(stringr::str_extract(string, pattern = "[0-9]{1,2}"))
   }
-  
+
   solver_status <- extract_status(text[line_numbers])
   model_status <- extract_status(text[line_numbers + 1])
-  
-  return(tibble::tibble(solver_status,
-                        model_status))
 
+  return(tibble::tibble(
+    solver_status,
+    model_status
+  ))
 }
+
 
 #' Launch GAMS from command line
 #'
@@ -78,18 +81,20 @@ extract_status_from_lst <- function(lstfile) {
 #' gms file that was launched, 'return_code' containing the return code
 #' following the call, and 'status' a list column containing a 'tibble()' of
 #' solver and model status. The most standard return codes are
-#' 
+#'
 #' - 0 for normal return
 #' - 2 for compilation error
 #' - 3 for execution error
-#' 
+#'
 #' see <https://www.gams.com/latest/docs/UG_GAMSReturnCodes.html#UG_GAMSReturnCodes_ListOfErrorCodes>
 #' for the full list of GAMS return codes.
 #' For solver status codes, see <https://www.gams.com/latest/docs/UG_GAMSOutput.html#UG_GAMSOutput_SolverStatus>
 #' and for model status, see <https://www.gams.com/latest/docs/UG_GAMSOutput.html#UG_GAMSOutput_ModelStatus>.
 #' @examples
-#' fpath <- file.path(sub(";.*$", "", Sys.getenv("GAMSDIR")),
-#'                    "gamslib_ml", "trnsport.1")
+#' fpath <- file.path(
+#'   sub(";.*$", "", Sys.getenv("GAMSDIR")),
+#'   "gamslib_ml", "trnsport.1"
+#' )
 #' gams(fpath, options = list(output = "NUL", lp = "cplex"))
 #' @seealso [system()] for the list of options of the command used to launch
 #' GAMS.
@@ -108,8 +113,7 @@ gams <- function(gmsfile, options = list(), save,
   if (any(c("o", "output") %in% names(options))) {
     lstfile <- purrr::keep_at(options, c("o", "output"))[[1]]
   } else {
-    lstfile <- paste0(strsplit(basename(gmsfile),
-                              split = ".", fixed = TRUE)[[1]][1], ".lst")
+    lstfile <- paste0(strsplit(basename(gmsfile), split = ".", fixed = TRUE)[[1]][1], ".lst")
   }
 
   options <- combine.lists(default_options, options)
@@ -137,7 +141,7 @@ gams <- function(gmsfile, options = list(), save,
     envvar <- purrr::reduce(envvar, paste)
   }
 
-  
+
   gamscl <- paste("gams ", gmsfile, options, save, restart, gdx, envvar)
   if (!missing(wd)) {
     current_wd <- getwd()
@@ -151,6 +155,7 @@ gams <- function(gmsfile, options = list(), save,
   status <- extract_status_from_lst(lstfile)
 
   return(tibble::tibble(gmsfile,
-                        return_code,
-                        status = list(status)))
+    return_code,
+    status = list(status)
+  ))
 }

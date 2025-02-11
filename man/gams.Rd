@@ -44,8 +44,10 @@ and for model status, see \url{https://www.gams.com/latest/docs/UG_GAMSOutput.ht
 Launch GAMS from command line
 }
 \examples{
-fpath <- file.path(sub(";.*$", "", Sys.getenv("GAMSDIR")),
-                   "gamslib_ml", "trnsport.1")
+fpath <- file.path(
+  sub(";.*$", "", Sys.getenv("GAMSDIR")),
+  "gamslib_ml", "trnsport.1"
+)
 gams(fpath, options = list(output = "NUL", lp = "cplex"))
 }
 \seealso{

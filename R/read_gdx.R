@@ -38,15 +38,16 @@ read_gdx <- function(files,
                      factors_as_strings = TRUE,
                      names = NULL,
                      names_to = "name") {
-
   gdx_cont <- gamstransfer::Container$new(loadFrom = files[1])
 
   if (!is.null(symbol)) has_symbol <- gdx_cont$hasSymbols(symbol)
 
   # In the absence of symbol_name returns a data.frame of symbols in the gdx
   if (is.null(symbol) || !has_symbol) {
-    dt <- data.frame(type = "",
-                     symbol = gdx_cont$listSymbols())
+    dt <- data.frame(
+      type = "",
+      symbol = gdx_cont$listSymbols()
+    )
     dt[is.element(dt$symbol, gdx_cont$listVariables()), "type"] <- "variable"
     dt[is.element(dt$symbol, gdx_cont$listEquations()), "type"] <- "equation"
     dt[is.element(dt$symbol, gdx_cont$listSets()), "type"] <- "set"
@@ -55,11 +56,11 @@ read_gdx <- function(files,
     # Change data type
     dt <-
       switch(data_type,
-             "tb" = tibble::as_tibble(dt),
-             "dt" = data.table::as.data.table(dt),
-             "df" = dt,
-             dt
-             )
+        "tb" = tibble::as_tibble(dt),
+        "dt" = data.table::as.data.table(dt),
+        "df" = dt,
+        dt
+      )
     if (is.null(symbol)) {
       return(dt)
     } else {
@@ -103,7 +104,6 @@ read_gdx_single <- function(file,
                             attributes,
                             data_type,
                             factors_as_strings) {
-
   # Import data
   gdx_cont <- gamstransfer::Container$new()
   gdx_cont$read(loadFrom = file, symbols = symbol)
@@ -119,35 +119,37 @@ read_gdx_single <- function(file,
         up = "upper",
         s = "scale"
       )
-      col_to_remove <- variable_attributes[setdiff(names(variable_attributes),
-                                                   attributes)]
+      col_to_remove <- variable_attributes[setdiff(
+        names(variable_attributes),
+        attributes
+      )]
       dt[col_to_remove] <- NULL
     } else if (is.element("element_text", colnames(dt)) &&
-                 !is.element("te", attributes)) {
+      !is.element("te", attributes)) {
       dt["element_text"] <- NULL
     }
   }
 
   # Rename column
   if (!is.null(col_names)) {
-    select_colnames <- 1:min(length(col_names),ncol(dt))  # nolint
+    select_colnames <- 1:min(length(col_names), ncol(dt)) # nolint
     colnames(dt)[select_colnames] <- col_names[select_colnames]
+  }
+
+  # Convert factors to strings
+  if (factors_as_strings) {
+    idx_factor <- seq_len(ncol(dt))[sapply(dt, is.factor)]
+    for (j in idx_factor) dt[, j] <- as.character(dt[, j])
   }
 
   # Change data type
   dt <-
     switch(data_type,
-           "tb" = tibble::as_tibble(dt),
-           "dt" = data.table::as.data.table(dt),
-           "df" = dt,
-           dt
-           )
-
-  # Convert factors to strings
-  if (factors_as_strings) {
-    idx_factor <- (1:ncol(dt))[sapply(dt, is.factor)]
-    for (j in idx_factor) dt[, j] <- as.character(dt[, j])
-  }
+      "tb" = tibble::as_tibble(dt),
+      "dt" = data.table::as.data.table(dt),
+      "df" = dt,
+      dt
+    )
 
   return(dt)
 }

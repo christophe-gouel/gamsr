@@ -10,16 +10,19 @@ where_is_gams <- function() {
   sysname <- Sys.info()[["sysname"]]
 
   find_in_default_path <- function(sysname) {
-    default_path <- c(Windows = "C:/GAMS",
-                      Linux = "/opt/gams",
-                      Darwin = "/Applications/GAMS")
+    default_path <- c(
+      Windows = "C:/GAMS",
+      Linux = "/opt/gams",
+      Darwin = "/Applications/GAMS"
+    )
     default_path <- default_path[sysname]
 
     gams_path <- list.files(default_path)
     if (sysname == "Windows") gams_path <- as.integer(gams_path)
     gams_path <- sort(gams_path, decreasing = TRUE)[1]
     gams_path <- ifelse(is.na(gams_path), "",
-                        file.path(default_path, gams_path))
+      file.path(default_path, gams_path)
+    )
 
     return(gams_path)
   }

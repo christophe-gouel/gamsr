@@ -11,7 +11,7 @@
 #' @param file Path to the output file.
 #'
 #' @return Invisible version of the modified data frame.
-#' 
+#'
 #' @examples
 #' # Create a data frame
 #' df <- data.frame(
@@ -19,7 +19,7 @@
 #'   j = rep(c("new-york", "chicago", "topeka"), 2),
 #'   value = c(2.5, 1.7, 1.8, 2.5, 1.8, 1.4)
 #' )
-#' 
+#'
 #' # Write the data frame to a GMS file
 #' write_gms(df, tempfile())
 #'
